@@ -1,11 +1,8 @@
-import com.sun.org.apache.xpath.internal.objects.XString;
-
 public class Plan
 {
     public String start;
     public String end;
     public String type;
-    public int cost;
 
     public Plan(String start, String end, String type)
     {
