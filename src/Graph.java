@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 public class Graph {
 
-    public LinkedList<City> adjList;
+    public LinkedList<City> adjacencyList;
 
     public void generateGraph(String filePath)
     {
@@ -25,7 +25,7 @@ public class Graph {
                 boolean exists1 = false;
                 boolean exists2 = false;
 
-                for (City city : adjList) {
+                for (City city : adjacencyList) {
                     if (city.name.equals(city1)) {
                         if (!city.neighbors.contains(c2)) {
                             city.neighbors.add(c2);
@@ -44,13 +44,13 @@ public class Graph {
                 if(!exists1) {
                     c1.neighbors.add(c2);
                     c1.edgeList.add(e);
-                    adjList.add(c1);
+                    adjacencyList.add(c1);
                 }
 
                 if (!exists2) {
                     c2.neighbors.add(c1);
                     c2.edgeList.add(e);
-                    adjList.add(c2);
+                    adjacencyList.add(c2);
                 }
             }
             sc.close();
@@ -61,7 +61,7 @@ public class Graph {
 
     public Graph(String flightData, String requestedFlightData)
     {
-        adjList = new LinkedList<>();
+        adjacencyList = new LinkedList<>();
         generateGraph(flightData);
         //generateGraph(requestedFlightData);
     }
@@ -69,7 +69,7 @@ public class Graph {
     public String toString()
     {
         String s = "";
-        for (City city : adjList) {
+        for (City city : adjacencyList) {
             s += city + ":\n";
             s += city.printNeighbors() + "\n";
         }
