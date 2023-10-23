@@ -3,6 +3,9 @@ import java.util.*;
 public class Graph {
 
     public LinkedList<City> adjacencyList;
+    public LinkedList<Plan> requestedList;
+    Stack<City> stack = new Stack<>();
+
 
     public void generateGraph(String filePath)
     {
@@ -59,11 +62,35 @@ public class Graph {
         }
     }
 
+    public void generatePlan(String filePath)
+    {
+        try {
+            Scanner sc = new Scanner(new File("src/" + filePath));
+            int N = Integer.parseInt(sc.nextLine());
+            for (int i = 0; i < N; i++) {
+                String line = sc.nextLine();
+                String[] tokens = line.split("\\|");
+
+                String city1 = tokens[0];
+                String city2 = tokens[1];
+                String type = tokens[2];
+
+                Plan p = new Plan(city1, city2, type);
+                requestedList.add(p);
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+    }
+
     public Graph(String flightData, String requestedFlightData)
     {
         adjacencyList = new LinkedList<>();
         generateGraph(flightData);
-        //generateGraph(requestedFlightData);
+
+        requestedList = new LinkedList<>();
+        generatePlan(requestedFlightData);
     }
 
     public String toString()
@@ -76,13 +103,36 @@ public class Graph {
         return s;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        String infile1 = args[0];
-        String infile2 = args[1];
-        String outFile = args[2];
-        PrintWriter out = new PrintWriter(outFile);
-        Graph g = new Graph(infile1, infile2);
-        System.out.print(g);
+    public String printPlan()
+    {
+        String s = "";
+        for (Plan plan : requestedList) {
+            s += plan + "\n";
+        }
+        return s;
     }
+
+    public void iterativeDFS() {
+        for (Plan plan : requestedList) {
+            City start = null;
+            City end = null;
+            for (City city : adjacencyList) {
+                if (city.name.equals(plan.start)) {
+                    start = city;
+                }
+                if (city.name.equals(plan.end)) {
+                    end = city;
+                }
+            }
+            if (plan.type.equals("Time")) {
+                //iterativeDFSTime(start, end);
+            }
+            else {
+                //iterativeDFSCost(start, end);
+            }
+        }
+    }
+
+
 
 }
