@@ -21,6 +21,6 @@ public class Plan
 
     public String toString()
     {
-        return "Start: " + start + " End: " + end + " Type: " + type;
+        return start + ", " + end + " (" + type + ")";
     }
 }

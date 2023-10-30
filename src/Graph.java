@@ -4,8 +4,17 @@ public class Graph {
 
     public LinkedList<City> adjacencyList;
     public LinkedList<Plan> requestedList;
-    Stack<City> stack = new Stack<>();
+    public LinkedList<LinkedList<City>> allPaths;
+    public Stack<City> stack;
+    public boolean[] visited;
 
+    public Graph(String filePath1, String filePath2)
+    {
+        adjacencyList = new LinkedList<>();
+        requestedList = new LinkedList<>();
+        generateGraph(filePath1);
+        generatePlan(filePath2);
+    }
 
     public void generateGraph(String filePath)
     {
@@ -83,16 +92,6 @@ public class Graph {
             System.out.println("File not found");
         }
     }
-
-    public Graph(String flightData, String requestedFlightData)
-    {
-        adjacencyList = new LinkedList<>();
-        generateGraph(flightData);
-
-        requestedList = new LinkedList<>();
-        generatePlan(requestedFlightData);
-    }
-
     public String toString()
     {
         String s = "";
@@ -112,10 +111,15 @@ public class Graph {
         return s;
     }
 
-    public void iterativeDFS() {
-        for (Plan plan : requestedList) {
+    public void printAllPaths(){
+        for (int i = 0; i < requestedList.size(); i++) {
+            Plan plan = requestedList.get(i);
+            System.out.println("Flight " + i + ": " + plan);
             City start = null;
             City end = null;
+            allPaths = new LinkedList<>();
+            visited = new boolean[adjacencyList.size()];
+            Stack<City> pathStack = new Stack<>();
             for (City city : adjacencyList) {
                 if (city.name.equals(plan.start)) {
                     start = city;
@@ -124,15 +128,42 @@ public class Graph {
                     end = city;
                 }
             }
-            if (plan.type.equals("Time")) {
-                //iterativeDFSTime(start, end);
-            }
-            else {
-                //iterativeDFSCost(start, end);
-            }
+            pathStack.push(start);
+            printAllPaths(start, end, visited, pathStack);
+            System.out.println("");
         }
     }
 
+    public int getCityIndex(String cityName) {
+        for (int i = 0; i < adjacencyList.size(); i++) {
+            if (adjacencyList.get(i).name.equals(cityName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
+    private void printAllPaths(City start, City end, boolean[] visited, Stack<City> pathStack)
+    {
+        int startInd = getCityIndex(start.name);
+        int endInd = getCityIndex(end.name);
 
+        visited[startInd] = true;
+
+        if (start.name.equals(end.name)) {
+            allPaths.add(new LinkedList<>(pathStack));
+            System.out.println(pathStack);
+        }
+
+        LinkedList<City> neighbors = start.neighbors;
+        for (City city : neighbors) {
+            int cityInd = getCityIndex(city.name);
+            if (!visited[cityInd]) {
+                pathStack.push(adjacencyList.get(cityInd));
+                printAllPaths(adjacencyList.get(cityInd), adjacencyList.get(endInd), visited, pathStack);
+                pathStack.pop();
+            }
+        }
+        visited[startInd] = false;
+    }
 }
