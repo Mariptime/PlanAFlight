@@ -33,7 +33,7 @@ public class Graph {
 
     public void generateGraph(String filePath) {
         try {
-            Scanner sc = new Scanner(new File("src/" + filePath));
+            Scanner sc = new Scanner(new File(filePath));
             int N = Integer.parseInt(sc.nextLine());
             for (int i = 0; i < N; i++) {
                 String line = sc.nextLine();
@@ -87,7 +87,7 @@ public class Graph {
 
     public void generatePlan(String filePath) {
         try {
-            Scanner sc = new Scanner(new File("src/" + filePath));
+            Scanner sc = new Scanner(new File(filePath));
             int N = Integer.parseInt(sc.nextLine());
             for (int i = 0; i < N; i++) {
                 String line = sc.nextLine();
@@ -227,7 +227,7 @@ public class Graph {
 
     public void printPathsToFile(String flight) {
         try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream("src/" + outFile, true));
+            PrintWriter pw = new PrintWriter(new FileOutputStream(outFile, true));
             pw.println(flight);
             if (allPaths.isEmpty()) {
                 pw.println("No flights available.");
