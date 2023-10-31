@@ -23,6 +23,14 @@ public class Graph {
         this.outFile = outFile;
     }
 
+    public static void main(String[] args) {
+        String infile1 = args[0];
+        String infile2 = args[1];
+        String outFile = args[2];
+        Graph g = new Graph(infile1, infile2, outFile);
+        g.findAllPaths();
+    }
+
     public void generateGraph(String filePath) {
         try {
             Scanner sc = new Scanner(new File("src/" + filePath));
@@ -141,8 +149,7 @@ public class Graph {
     }
 
     private void findAllPaths(City start, City end, boolean[] visited, Stack<City> pathStack) {
-        if (start == null || end == null)
-            return;
+        if (start == null || end == null) return;
 
         int startInd = getCityIndex(start.name);
         int endInd = getCityIndex(end.name);
@@ -205,8 +212,7 @@ public class Graph {
     }
 
     private double getCost(LinkedList<City> cities) {
-        int cost = 0;
-
+        double cost = 0;
         for (int i = 0; i < cities.size() - 1; i++) {
             City city1 = cities.get(i);
             City city2 = cities.get(i + 1);
@@ -219,43 +225,22 @@ public class Graph {
         return cost;
     }
 
-    public void printAllPaths() {
-        for (LinkedList<City> path : allPaths) {
-            for (int i = 0; i < path.size(); i++) {
-                City city = path.get(i);
-                if (i != path.size() - 1)
-                    System.out.print(city + " -> ");
-                else
-                    System.out.print(city + ". ");
-            }
-            if (requestedList.get(0).type.equals("Time")) {
-                System.out.print("Time: " + getTime(path) + " Cost: " + String.format("%.2f", getCost(path)));
-            } else {
-                System.out.print("Time: " + getTime(path) + " Cost: " + String.format("%.2f", getCost(path)));
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public boolean printPathsToFile(String flight) {
+    public void printPathsToFile(String flight) {
         try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(new File("src/" + outFile), true));
+            PrintWriter pw = new PrintWriter(new FileOutputStream("src/" + outFile, true));
             pw.println(flight);
             if (allPaths.isEmpty()) {
                 pw.println("No flights available.");
                 pw.println();
                 pw.close();
-                return true;
+                return;
             }
             for (int j = 0; j < Math.min(3, allPaths.size()); j++) {
                 LinkedList<City> path = allPaths.get(j);
                 for (int i = 0; i < path.size(); i++) {
                     City city = path.get(i);
-                    if (i != path.size() - 1)
-                        pw.print(city + " -> ");
-                    else
-                        pw.print(city + ". ");
+                    if (i != path.size() - 1) pw.print(city + " -> ");
+                    else pw.print(city + ". ");
                 }
                 if (requestedList.get(0).type.equals("Time")) {
                     pw.print("Time: " + getTime(path) + " Cost: " + String.format("%.2f", getCost(path)));
@@ -266,17 +251,8 @@ public class Graph {
             }
             pw.println();
             pw.close();
-            return true;
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
-            return false;
         }
-    }
-    public static void main(String[] args) throws FileNotFoundException {
-        String infile1 = args[0];
-        String infile2 = args[1];
-        String outFile = args[2];
-        Graph g = new Graph(infile1, infile2, outFile);
-        g.findAllPaths();
     }
 }

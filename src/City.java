@@ -4,7 +4,6 @@ public class City {
     public String name;
     public LinkedList<City> neighbors;
     public LinkedList<Edge> edgeList;
-    public boolean visited;
 
     public City(String name) {
         this.name = name;
