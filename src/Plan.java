@@ -1,26 +1,20 @@
-public class Plan
-{
+public class Plan {
     public String start;
     public String end;
     public String type;
 
-    public Plan(String start, String end, String type)
-    {
+    public Plan(String start, String end, String type) {
         this.start = start;
         this.end = end;
 
-        if(type.equals("T"))
-        {
+        if (type.equals("T")) {
             this.type = "Time";
-        }
-        else
-        {
+        } else {
             this.type = "Cost";
         }
     }
 
-    public String toString()
-    {
+    public String toString() {
         return start + ", " + end + " (" + type + ")";
     }
 }
